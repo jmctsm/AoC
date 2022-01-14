@@ -3,9 +3,9 @@
 from typing import List
 
 
-def read_file() -> List[int]:
+def read_file() -> List:
     return_list = []
-    with open(f"input.txt", "r", encoding="utf-8") as input_file:
+    with open("input.txt", "r", encoding="utf-8") as input_file:
         lines = input_file.readlines()
         for line in lines:
             split_list = line.split()
@@ -43,7 +43,7 @@ def puz_part02():
         if movement_list[0] == "forward":
             forward_location += movement_list[1]
             if aim_location != 0:
-                depth_location = depth_location + (aim_location * forward_location)
+                depth_location = depth_location + (aim_location * movement_list[1])
             elif aim_location == 0:
                 depth_location = depth_location
         elif movement_list[0] == "up":
