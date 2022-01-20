@@ -1,58 +1,52 @@
 #!python
 
-from pprint import PrettyPrinter
-
 
 def readfile_input():
     boards_return = []
     call_list_return = []
-    game_board = []
     with open("input.txt", "r", encoding="utf-8") as input_file:
         lines = input_file.readlines()
         line_list = []
-        line_counter = 0
         for line in lines:
             if line == "\n":
-                print(f"{len(line_list) = }")
-                if len(line_list[0]) > 5:
-                    call_list_return = line_list[0]
-                    line_list = []
-                    line_counter = 0
-                    continue
-                elif len(line_list) == 5:
-                    game_board.append(line_list)
-                    print(game_board)
-                    line_counter += 1
-                    if line_counter == 4:
-                        boards_return.append(game_board)
-                        line_counter = 0
-                        game_board = []
-                    line_list = []
-                    continue
-                else:
-                    print("line_list is not the right number")
-                    print(f"{line_list = }")
-                    exit()
-            else:
-                stripped_line = line.strip()
-                if "," in stripped_line:
-                    line_list.append(stripped_line.split(","))
-                else:
-                    line_list.append(stripped_line.split())
+                continue
+            stripped_line = line.strip()
+            if "," in stripped_line:
+                call_list_return = stripped_line.split(",")
+            elif " " in stripped_line:
+                line_list.append(stripped_line.split())
+            if len(line_list) == 5:
+                boards_return.append(line_list)
+                line_list = []
     return (call_list_return, boards_return)
+
+
+def count_board():
+    pass
+
+
+def check_bingo(game_boards):
+    for game_board in range(len(game_boards)):
+        for game_line in range(len(game_boards[game_board])):
+            if game_boards[game_board][game_line] == ["X", "X", "X", "X", "X"]:
+                print("Bingo_Found")
 
 
 def puz_part01():
     call_list, input_list = readfile_input()
-    print(f"{call_list = }")
-    counter = 0
-    print(input_list)
-    for game_board in input_list:
-        for game_line in game_board:
-            print(f"Game {counter}")
-            print(game_line)
-            counter += 1
-        print("\n\n")
+    value_found = False
+    for call_number in call_list:
+        for game_board in range(len(input_list)):
+            for game_line in range(len(input_list[game_board])):
+                for game_number in range(len(input_list[game_board][game_line])):
+                    if call_number == input_list[game_board][game_line][game_number]:
+                        input_list[game_board][game_line][game_number] = "X"
+                        value_found = check_bingo(input_list)
+                        if value_found:
+                            print(
+                                f"Value to put in website = {call_number * value_found}"
+                            )
+
     print("Part 01")
     print("\n\n")
 
